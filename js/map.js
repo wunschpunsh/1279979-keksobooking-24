@@ -2,10 +2,12 @@ import { setFormStateDisabled } from './form.js';
 import { createPopup } from './popup.js';
 import { getData } from './api.js';
 import { filterAds, addFiltersHandler } from './filter.js';
+import { debounce } from './utils/debounce.js';
 const address = document.querySelector('input[name="address"]');
 setFormStateDisabled(true);
 
 const map = L.map('map-canvas');
+
 map.on('load', () => {
   setTimeout(() => {
     setFormStateDisabled(false);
@@ -60,16 +62,23 @@ const getAllMarkers = (data) => {
 };
 
 getData((data) => {
+
+  setFormStateDisabled(false);
+  getAllMarkers(data);
+  addFiltersHandler(debounce(() => {
   getAllMarkers(data);
   addFiltersHandler(() => {
+
     map.eachLayer((layer) => {
       if (layer.options && layer.options.icon && layer.options.icon.options.iconUrl !== 'img/main-pin.svg') {
         layer.remove();
       }
     });
     getAllMarkers(filterAds(data));
+
+  }));
   });
-});
+
 
 
 export { mainMarker, address, map };
