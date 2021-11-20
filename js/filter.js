@@ -1,10 +1,12 @@
-
 const mapFilters = document.querySelector('.map__filters');
 const housingType = mapFilters.querySelector('#housing-type');
 const housingPrice = mapFilters.querySelector('#housing-price');
 const housingRooms = mapFilters.querySelector('#housing-rooms');
 const housingGuests = mapFilters.querySelector('#housing-guests');
+
 const ANY = 'any';
+const MAX_ITEMS = 10;
+
 const priceMap = {
   low: {
     min: 0,
@@ -20,9 +22,7 @@ const priceMap = {
   },
 };
 
-
-
-const filteredAds = ({ offer }) => {
+const getFilteredAd = ({ offer }) => {
   const checkedFeatures = mapFilters.querySelectorAll('input[name="features"]:checked');
 
   let isType = true;
@@ -43,7 +43,9 @@ const filteredAds = ({ offer }) => {
     if (!isFeatures) {
       return false;
     }
- if (housingType.value !== ANY) {
+  }
+
+  if (housingType.value !== ANY) {
     isType = offer.type === housingType.value;
 
     if (!isType) {
@@ -65,7 +67,6 @@ const filteredAds = ({ offer }) => {
     if (!isGuests) {
       return false;
     }
-
   }
 
   if (housingPrice.value !== ANY) {
@@ -80,13 +81,22 @@ const filteredAds = ({ offer }) => {
 };
 
 
-const filterAds = (advertisements) => advertisements.filter(getFilterAds);
+const filterAds = (advertisements) => {
+  const result = [];
+  let i = 0;
+  while (result.length <= MAX_ITEMS && i < advertisements.length) {
+    const item = advertisements[i++];
+    if (getFilteredAd(item)) {
+      result.push(item);
+    }
+  }
+
+  return result;
+};
 
 
 const addFiltersHandler = (cb) => {
-  mapFilters.addEventListener('change', () => {
-    cb();
-  });
+  mapFilters.addEventListener('change', cb);
 };
 
 export { filterAds, addFiltersHandler };
