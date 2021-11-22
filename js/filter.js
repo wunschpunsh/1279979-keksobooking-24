@@ -1,26 +1,26 @@
+const ANY = 'any';
+const MAX_ITEMS = 10;
+
+const PriceMap = {
+  LOW: {
+    MIN: 0,
+    MAX: 10000,
+  },
+  MIDDLE: {
+    MIN: 10000,
+    MAX: 50000,
+  },
+  HIGH: {
+    MIN: 50000,
+    MAX: Infinity,
+  },
+};
+
 const mapFilters = document.querySelector('.map__filters');
 const housingType = mapFilters.querySelector('#housing-type');
 const housingPrice = mapFilters.querySelector('#housing-price');
 const housingRooms = mapFilters.querySelector('#housing-rooms');
 const housingGuests = mapFilters.querySelector('#housing-guests');
-
-const ANY = 'any';
-const MAX_ITEMS = 10;
-
-const priceMap = {
-  low: {
-    min: 0,
-    max: 10000,
-  },
-  middle: {
-    min: 10000,
-    max: 50000,
-  },
-  high: {
-    min: 50000,
-    max: Infinity,
-  },
-};
 
 const getFilteredAd = ({ offer }) => {
   const checkedFeatures = mapFilters.querySelectorAll('input[name="features"]:checked');
@@ -70,7 +70,7 @@ const getFilteredAd = ({ offer }) => {
   }
 
   if (housingPrice.value !== ANY) {
-    isPrice = offer.price >= priceMap[housingPrice.value].min && offer.price < priceMap[housingPrice.value].max;
+    isPrice = offer.price >= PriceMap[housingPrice.value.toUpperCase()].MIN && offer.price < PriceMap[housingPrice.value.toUpperCase()].MAX;
 
     if (!isPrice) {
       return false;

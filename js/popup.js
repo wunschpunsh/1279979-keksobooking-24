@@ -1,9 +1,9 @@
 const Type = {
-  flat: 'Квартира',
-  bungalow: 'Бунгало',
-  house: 'Дом',
-  palace: 'Дворец',
-  hotel: 'Отель',
+  FLAT: 'Квартира',
+  BUNGALOW: 'Бунгало',
+  HOUSE: 'Дом',
+  PALACE: 'Дворец',
+  HOTEL: 'Отель',
 };
 
 const similarCardTemplate = document.querySelector('#card')
@@ -25,7 +25,7 @@ const createPopup = ({ author, offer }) => {
   renderIf('.popup__title', offer.title);
   renderIf('.popup__text--address', offer.address);
   renderIf('.popup__text--price', offer.price, `${offer.price}₽/ночь`);
-  renderIf('.popup__type', offer.type, Type[offer.type]);
+  renderIf('.popup__type', offer.type, Type[offer.type.toUpperCase()]);
   renderIf('.popup__text--capacity', offer.rooms, `${offer.rooms} комнаты для ${offer.guests} гостей`);
   renderIf('.popup__text--time', offer.checkout, `Заезд после ${offer.checkin} , выезд до ${offer.checkout}`);
   const featuresContainer = cardElement.querySelector('.popup__features');

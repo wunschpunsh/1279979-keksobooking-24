@@ -6,34 +6,31 @@ const roomToCapacity = {
   3: [1, 2, 3],
   100: [0],
 };
-const typeToValue = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000,
+const TypeToValue = {
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOTEL: 3000,
+  HOUSE: 5000,
+  PALACE: 10000,
 };
 
 const adForm = document.querySelector('.ad-form');
 const mapFilterForm = document.querySelector('.map__filters');
 const resetButton = document.querySelector('.ad-form__reset');
-const setFormStateDisabled = function (show) {
+const setFormStateDisabled = (show) => {
   const fieldsets = adForm.querySelectorAll('fieldset');
-  const mapFilters = mapFilterForm.querySelectorAll('.map__filter');
-  const mapFeatures = mapFilterForm.querySelectorAll('.map__features');
-  for (let i = 0; i < mapFeatures.length; i++) {
-    mapFeatures[i].disabled = show;
-  }
   adForm.classList.toggle('.ad-form--disabled', show);
   mapFilterForm.classList.toggle('.map__filters--disabled', show);
   for (let i = 0; i < fieldsets.length; i++) {
     fieldsets[i].disabled = show;
   }
-  for (let i = 0; i < mapFilters.length; i++) {
-    mapFilters[i].disabled = show;
+};
+const setFiltersStateDisabled = (show) => {
+  const mapFilterElements = mapFilterForm.elements;
+  for (let i = 0; i < mapFilterElements; i++) {
+    mapFilterElements[i].disabled = show;
   }
 };
-
 const price = document.querySelector('input[name="price"]');
 const type = document.querySelector('select[name="type"]');
 const room = document.querySelector('select[name="rooms"]');
@@ -42,8 +39,8 @@ const timein = document.querySelector('select[name="timein"]');
 const timeout = document.querySelector('select[name="timeout"]');
 
 const onTypeChange = () => {
-  price.min = typeToValue[type.value];
-  price.placeholder = `${typeToValue[type.value]}`;
+  price.min = TypeToValue[type.value.toUpperCase()];
+  price.placeholder = `${TypeToValue[type.value.toUpperCase()]}`;
 };
 type.addEventListener('change', onTypeChange);
 onTypeChange();
@@ -84,7 +81,7 @@ timeout.addEventListener('change', () => {
 const resetForm = () => {
   mapFilterForm.reset();
 
-  price.placeholder = typeToValue.flat;
+  price.placeholder = TypeToValue.FLAT;
   mainMarker.setLatLng({ lat: 35.68950, lng: 139.69200 });
 
   setTimeout(() => {
@@ -105,7 +102,7 @@ const getSuccessMessage = () => {
   body.append(successMessageElement);
   const closeListenerSuccessByKeydown = (evt) => {
     if (evt.key === 'Escape') {
-      document.removeEventListenre('keydown', closeListenerSuccessByKeydown)
+      document.removeEventListenre('keydown', closeListenerSuccessByKeydown);
       successMessageElement.remove();
     }
   };
@@ -135,7 +132,6 @@ const getErrorMessage = () => {
   const closeListenerErrorByClick = () => {
     errorMessageElement.removeEventListener('click', closeListenerErrorByClick);
     errorMessageElement.remove();
-    ;
   };
   errorMessageElement.addEventListener('click', closeListenerErrorByClick);
   document.addEventListener('keydown', closeListenerErrorByKeyDown);
@@ -164,4 +160,4 @@ const setUserFormSubmit = () => {
   });
 };
 
-export { setFormStateDisabled, setUserFormSubmit };
+export { setFormStateDisabled, setUserFormSubmit, setFiltersStateDisabled };
