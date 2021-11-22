@@ -27,7 +27,7 @@ const setFormStateDisabled = (show) => {
 };
 const setFiltersStateDisabled = (show) => {
   const mapFilterElements = mapFilterForm.elements;
-  for (let i = 0; i < mapFilterElements; i++) {
+  for (let i = 0; i < mapFilterElements.length; i++) {
     mapFilterElements[i].disabled = show;
   }
 };
@@ -78,6 +78,7 @@ timeout.addEventListener('change', () => {
     }
   }
 });
+
 const resetForm = () => {
   mapFilterForm.reset();
 
@@ -89,6 +90,7 @@ const resetForm = () => {
   }, 0);
   map.closePopup();
 };
+
 resetButton.addEventListener('click', () => {
   resetForm();
 });

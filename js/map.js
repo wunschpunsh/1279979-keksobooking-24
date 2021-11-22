@@ -31,6 +31,7 @@ const getAllMarkers = (data) => {
 map.on('load', () => {
   setFormStateDisabled(false);
   getData((data) => {
+    setFiltersStateDisabled(false);
     getAllMarkers(data);
     addFiltersHandler(debounce(() => {
       map.eachLayer((layer) => {
